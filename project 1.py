@@ -11,6 +11,8 @@ engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
 
+engine.setProperty('rate', 150)
+
 
 def speak(audio):
     engine.say(audio)
@@ -25,7 +27,7 @@ def wishMe():
         speak("Good Afternoon!")
     else:
         speak("Good Evening!")
-    speak("I am Jarvis Sir. Please tell me how may I help you")
+    speak("Please tell me how may I help you")
 
 
 def takeCommand():
@@ -58,9 +60,17 @@ def sendEmail(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
-    server.login('youremail@gmail.com', 'your-password')
-    server.sendmail('youremail@gmail.com', to, content)
+    server.login('', '')
+    server.sendmail('', to, content)
     server.close()
+
+
+def is_email_intent(query):
+    email_keywords = ['send email', 'email', 'compose email']
+    for keyword in email_keywords:
+        if keyword in query:
+            return True
+    return False
 
 
 if __name__ == "__main__":
@@ -68,13 +78,13 @@ if __name__ == "__main__":
     while True:
         query = takeCommand()
 
-        if 'send email' in query:
+        if is_email_intent(query):
             try:
                 speak("Who do you want to send the email to?")
-                recipient = input("Recipient's Email Address: ")
+                recipient = takeCommand()
 
                 speak("What should I say in the email?")
-                content = input("Email Content: ")
+                content = takeCommand()
 
                 sendEmail(recipient, content)
                 speak("Email has been sent!")
