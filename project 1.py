@@ -79,7 +79,7 @@ if __name__ == "__main__":
                 sendEmail(recipient, content)
                 speak("Email has been sent!")
             except Exception as e:
-                print(e)
+                print(e,"Sorry. I am not able to send this email.")
                 speak("Sorry. I am not able to send this email.")
 
         elif 'wikipedia' in query:
@@ -110,8 +110,20 @@ if __name__ == "__main__":
             speak(f"Sir, the time is {strTime}")
 
         elif 'open code' in query:
-            codePath = "C:\\Users\\Haris\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+            codePath = "D:\\vs codes\\project 1.txt"
             os.startfile(codePath)
+
+        elif 'open' in query:
+            # Extract the website name from the user's command
+            website_name = query.replace('open', '').strip()
+
+            # Add the protocol (http:// or https://) if missing
+            if not website_name.startswith(('http://', 'https://')):
+                website_names = 'https://' + website_name + '.com'
+
+                website_url = website_names
+                browser = webdriver.Edge()  # You may need to download the ChromeDriver executable
+                browser.get(website_url)
 
         elif 'exit' in query:
             break
